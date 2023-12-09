@@ -44,7 +44,7 @@ b. Install dependences:
 npm install
 ```
 
-c. Create enviroment variables file:
+c. Set up enviroment variables:
 ```bash
 # .env
 DB_HOST=localhost
@@ -95,10 +95,10 @@ npm run create <name>       # The age is optional
 
 b. Read pets data:
 ```bash
-# curl -s "http://localhost:8000/pets/"
+# curl "http://localhost:8000/pets/"
 npm run read        # All pets data
 
-# curl -s "http://localhost:8000/pets/<id>"
+# curl "http://localhost:8000/pets/<id>"
 npm run read <id>   # A single one by id
 ```
 
@@ -112,6 +112,6 @@ npm run update <id> age <age>
 
 d. Delete data by pet id:
 ```bash
-# curl -s -X DELETE "http://localhost:8000/pets/delete/<id>"
+# curl -X DELETE "http://localhost:8000/pets/delete/<id>"
 npm run delete <id>
 ```
