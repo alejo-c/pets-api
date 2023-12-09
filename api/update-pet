@@ -1,0 +1,13 @@
+if [ "$#" -ne 3 -a "$#" -ne 5 ]; then
+    echo "Usage: <id> name <value1> age <value2>"
+    exit 1
+fi
+
+id=$1
+body="\"$2\": \"$3\""
+if [ "$#" = 5 ]; then
+   body="$body, \"$4\": \"$5\""
+fi
+
+curl -s -X PUT -H "Content-Type: application/json" -d "{$body}" "http://localhost:8000/pets/update/$id"
+echo

@@ -1,0 +1,2 @@
+curl -s -d "{\"name\":\"$1\", \"age\":\"$2\"}" -H "Content-Type: application/json" -X POST http://localhost:8000/pets/create
+echo
