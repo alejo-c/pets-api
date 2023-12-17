@@ -1,12 +1,12 @@
 import express from "express"
-import { readPets, readPet, createPet, updatePet, removePet } from "../controllers/pets-controller.js"
+import * as controller from '../controllers/pets-controller.js'
 
 const router = express.Router()
 
-router.get('/', readPets)
-router.get('/:id', readPet)
-router.post('/create', createPet)
-router.put('/update/:id', updatePet)
-router.delete('/delete/:id', removePet)
+router.get('/', controller.readPets)
+router.get('/:id', controller.readPet)
+router.post('/create', controller.createPet)
+router.put('/update/:id', controller.updatePet)
+router.delete('/delete/:id', controller.removePet)
 
-export { router }
+export { router as petsRouter }
