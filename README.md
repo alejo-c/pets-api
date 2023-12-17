@@ -23,25 +23,25 @@ This project provides a RESTful API that manages the adoption requests for cats 
 # Create pet
 curl -d '{"type":"<type>, "name":"<name>", "age":"<age>"}' \
     -H "Content-Type: application/json" \
-    -X POST http://localhost:8000/pets/create
+    -X POST https://pets-api-orcin.vercel.app/pets/create
 ```
 ```sh
 # Show all pets
-curl http://localhost:8000/pets/
+curl https://pets-api-orcin.vercel.app/pets/
 ```
 ```sh
 # Show single pet
-curl http://localhost:8000/pets/<id>
+curl https://pets-api-orcin.vercel.app/pets/<id>
 ```
 ```sh
 # Update pet
 curl -d '{"type":"<type>, "name":"<name>", "age":"<age>"}' \
     -H "Content-Type: application/json" \
-    -X PUT http://localhost:8000/pets/update/<id>
+    -X PUT https://pets-api-orcin.vercel.app/pets/update/<id>
 ```
 ```sh
 # Delete pet
-curl -X DELETE http://localhost:8000/pets/delete/<id>
+curl -X DELETE https://pets-api-orcin.vercel.app/pets/delete/<id>
 ```
 
 ### Adopters CRUD
@@ -50,25 +50,25 @@ curl -X DELETE http://localhost:8000/pets/delete/<id>
 # Create adopter
 curl -d '{"name":"<name>", "address":"<address>, "contact":"<contact>"}' \
     -H "Content-Type: application/json" \
-    -X POST http://localhost:8000/adopters/create
+    -X POST https://pets-api-orcin.vercel.app/adopters/create
 ```
 ```sh
 # Show all adopters
-curl http://localhost:8000/adopters/
+curl https://pets-api-orcin.vercel.app/adopters/
 ```
 ```sh
 # Show single adopter
-curl http://localhost:8000/adopters/<id>
+curl https://pets-api-orcin.vercel.app/adopters/<id>
 ```
 ```sh
 # Update adopter
 curl -d '{"name":"<name>", "address":"<address>, "contact":"<contact>"}' \
     -H "Content-Type: application/json" \
-    -X PUT http://localhost:8000/adopters/update/<id>
+    -X PUT https://pets-api-orcin.vercel.app/adopters/update/<id>
 ```
 ```sh
 # Delete adopter
-curl -X DELETE http://localhost:8000/adopters/delete/<id>
+curl -X DELETE https://pets-api-orcin.vercel.app/adopters/delete/<id>
 ```
 
 ### Adoption Requests CRUD
@@ -77,33 +77,33 @@ curl -X DELETE http://localhost:8000/adopters/delete/<id>
 # Create adoptionrequest
 curl -d '{"pet_id":"<pet_id>", "adopter_id":"<adopter_id>}' \
     -H "Content-Type: application/json" \
-    -X POST http://localhost:8000/adoptionrequests/create
+    -X POST https://pets-api-orcin.vercel.app/adoptionrequests/create
 ```
 ```sh
 # Show all adoption requests
-curl http://localhost:8000/adoptionrequests/
+curl https://pets-api-orcin.vercel.app/adoptionrequests/
 ```
 ```sh
 # Show single adoption request
-curl http://localhost:8000/adoptionrequests/<id>
+curl https://pets-api-orcin.vercel.app/adoptionrequests/<id>
 ```
 ```sh
 # Update adoption request
 curl -d '{"pet_id":"<pet_id>", "adopter_id":"<adopter_id>}' \
     -H "Content-Type: application/json" \
-    -X PUT http://localhost:8000/adoptionrequests/update/<id>
+    -X PUT https://pets-api-orcin.vercel.app/adoptionrequests/update/<id>
 ```
 ```sh
 # Approve adoption request
-curl -X PUT http://localhost:8000/adoptionrequests/approve/<id>
+curl -X PUT https://pets-api-orcin.vercel.app/adoptionrequests/approve/<id>
 ```
 ```sh
 # Reject adoption request
-curl -X PUT http://localhost:8000/adoptionrequests/reject/<id>
+curl -X PUT https://pets-api-orcin.vercel.app/adoptionrequests/reject/<id>
 ```
 ```sh
 # Delete adoption request
-curl -X DELETE http://localhost:8000/adoptionrequests/delete/<id>
+curl -X DELETE https://pets-api-orcin.vercel.app/adoptionrequests/delete/<id>
 ```
 
 ## For Production
