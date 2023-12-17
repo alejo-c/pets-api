@@ -1,42 +1,126 @@
-# Backup 02 - Pets
+# Pets API Server
 
-This project provides a RESTful API for managing pet records in a MySQL database named `petsdb`. This API allows you to perform CRUD (Create, Read, Update, Delete) operations on the pet records stored in the `pets` table.
+This project provides a RESTful API that manages the adoption requests for cats and dogs in a MySQL database named `petsdb`. This API allows you to perform CRUD (Create, Read, Update, Delete) operations on the pet, adopters, and adoptino requests records stored in the `pets`, `adopters` and `adoption_requests` tables, including an extra operations to approve and reject adoption requests.
 
 **Made by:** José Alejandro Castrillón Ortega.
 
 ## Table of contents
 
-1. [Features](#features)
-2. [Tecnologies used](#technologies-used)
-3. [Requirements](#requirements)
-4. [Getting Started](#getting-started)
-5. [Usage](#usage)
+1. [API Usage](#api-usage)
+    1. [Pets CRUD](#pets-crud).
+    2. [Adopters CRUD](#adopters-crud).
+    3. [Adoption Requests CRUD](#adoption-requests-crud).
+2. [For Production](#for-production)
+    1. [Requirements](#requirements-for-production)
+    2. [Getting Started](#getting-started)
+    3. [Usage](#production-usage)
 
-## Features
+## API Usage
 
-- **Create:** Add new pet records to the database with pet data.
-- **Read:** Retrieve information about existing pets from the database.
-- **Update:** Modify the details of a pet in the database.
-- **Delete:** Remove a pet record from the database.
+### Pets CRUD
 
-## Technologies Used
+```sh
+# Create pet
+curl -d '{"type":"<type>, "name":"<name>", "age":"<age>"}' \
+    -H "Content-Type: application/json" \
+    -X POST http://localhost:8000/pets/create
+```
+```sh
+# Show all pets
+curl http://localhost:8000/pets/
+```
+```sh
+# Show single pet
+curl http://localhost:8000/pets/<id>
+```
+```sh
+# Update pet
+curl -d '{"type":"<type>, "name":"<name>", "age":"<age>"}' \
+    -H "Content-Type: application/json" \
+    -X PUT http://localhost:8000/pets/update/<id>
+```
+```sh
+# Delete pet
+curl -X DELETE http://localhost:8000/pets/delete/<id>
+```
 
-- **Express.js:** A fast, unopinionated, minimalist web framework for Node.js, used for building the API endpoints and handling HTTP requests.
-- **Sequelize:** A promise-based Node.js ORM for MySQL, used for managing the database, defining models, and executing queries.
-- **dotenv:** A zero-dependency module for loading environment variables from a .env file, helping to keep sensitive information secure.
-- **nodemon:** Monitors for changes in files and automatically restarts the server during development.
+### Adopters CRUD
 
-### Requirements
+```sh
+# Create adopter
+curl -d '{"name":"<name>", "address":"<address>, "contact":"<contact>"}' \
+    -H "Content-Type: application/json" \
+    -X POST http://localhost:8000/adopters/create
+```
+```sh
+# Show all adopters
+curl http://localhost:8000/adopters/
+```
+```sh
+# Show single adopter
+curl http://localhost:8000/adopters/<id>
+```
+```sh
+# Update adopter
+curl -d '{"name":"<name>", "address":"<address>, "contact":"<contact>"}' \
+    -H "Content-Type: application/json" \
+    -X PUT http://localhost:8000/adopters/update/<id>
+```
+```sh
+# Delete adopter
+curl -X DELETE http://localhost:8000/adopters/delete/<id>
+```
 
+### Adoption Requests CRUD
+
+```sh
+# Create adoptionrequest
+curl -d '{"pet_id":"<pet_id>", "adopter_id":"<adopter_id>}' \
+    -H "Content-Type: application/json" \
+    -X POST http://localhost:8000/adoptionrequests/create
+```
+```sh
+# Show all adoption requests
+curl http://localhost:8000/adoptionrequests/
+```
+```sh
+# Show single adoption request
+curl http://localhost:8000/adoptionrequests/<id>
+```
+```sh
+# Update adoption request
+curl -d '{"pet_id":"<pet_id>", "adopter_id":"<adopter_id>}' \
+    -H "Content-Type: application/json" \
+    -X PUT http://localhost:8000/adoptionrequests/update/<id>
+```
+```sh
+# Approve adoption request
+curl -X PUT http://localhost:8000/adoptionrequests/approve/<id>
+```
+```sh
+# Reject adoption request
+curl -X PUT http://localhost:8000/adoptionrequests/reject/<id>
+```
+```sh
+# Delete adoption request
+curl -X DELETE http://localhost:8000/adoptionrequests/delete/<id>
+```
+
+## For Production
+
+### Requirements for Production
+
+For running the server locally you need the next tecnologies and follow the [next steps](#getting-started).
+
+- Git.
 - NodeJS & npm.
 - MySQL.
-- A shell terminal to run shell scripts (bash).
 
 ### Getting Started
 
 a. Clone the repository:
 ```bash
-git clone https://github.com/alejo-c/backend-02.git
+git clone https://github.com/alejo-c/pets-api.git
 ```
 
 b. Install dependences:
@@ -45,73 +129,33 @@ npm install
 ```
 
 c. Set up enviroment variables:
-```bash
+```conf
 # .env
 DB_HOST=localhost
 DB_USER=<your_username>
 DB_PASSWD=<your_password>
+DB_NAME=<your_database>
+```
+```conf
+# .env example
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWD=
 DB_NAME=petsdb
 ```
 
 d. Import the database backup:
-```bash
-# Log in as a MySQL root user
+```sql
+-- Log in as a MySQL root user
 mysql -u root -p
 
-# Create the database
-CREATE DATABASE petsdb;
+-- Use your previous created database
+use <database_name>
 
-# Create a new user
-CREATE USER '<your_username>'@'localhost' IDENTIFIED BY '<your_password>';
-
-# Grant privileges to the user for the 'petsdb' database
-GRANT ALL PRIVILEGES ON petsdb.* TO '<your_username>'@'localhost';
-
-# Flush privileges to apply the changes
-FLUSH PRIVILEGES;
-
-# Restore data into the database
+-- Restore data into the database
 source petsdb.bk.sql
 ```
 
-### Usage
+### Production Usage
 
-a. Start the application
-- Normally:
-    ```bash
-    npm run start
-    ```
-- Development mode:
-    ```bash
-    npm run dev
-    ```
-    
-b. Create new pet data:
-```bash
-# curl -d '{"name":"<name>", "age":"<age>"}' -H "Content-Type: application/json" -X POST http://localhost:8000/pets/create
-npm run create <name> <age>
-npm run create <name>       # The age is optional
-```
-
-b. Read pets data:
-```bash
-# curl "http://localhost:8000/pets/"
-npm run read        # All pets data
-
-# curl "http://localhost:8000/pets/<id>"
-npm run read <id>   # A single one by id
-```
-
-c. Update data by pet id:
-```bash
-# curl -d '{"name": <name>, "age": <age>}' -H "Content-Type: application/json" -X PUT "http://localhost:8000/pets/update/<id>"
-npm run update <id> name <name> age <age>
-npm run update <id> name <name>
-npm run update <id> age <age>
-```
-
-d. Delete data by pet id:
-```bash
-# curl -X DELETE "http://localhost:8000/pets/delete/<id>"
-npm run delete <id>
-```
+Replace the host with `http://localhost:8000` when sending requests.
