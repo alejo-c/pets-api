@@ -1,53 +1,73 @@
-import { pet as Pet } from "../models/pet-model.js"
+import { Pet, petTypes, getPet, formatPet } from '../models/pet-model.js'
 
-const readPets = async (req, res) => {
-    const pets = await Pet.findAll()
+export const readPets = async (req, res) => {
+    let pets = await Pet.findAll()
+    pets = pets.map(pet => formatPet(pet))
+
     const length = pets.length
-
     if (length == 0)
-        return res.status(500).jsonPretty({ error: 'There is no pets', length })
+        return res.status(500).jsonPretty({ type: 'error', message: 'There is no pets', length })
+
     res.status(200).jsonPretty({ pets, length })
 }
 
-const readPet = async (req, res) => {
+export const readPet = async (req, res) => {
     const id = req.params.id
-    const pet = await Pet.findByPk(id)
+    const pet = await getPet(id)
 
     if (pet == null)
-        return res.status(500).jsonPretty({ error: `Pet [${id}] not found` })
-    res.status(200).jsonPretty({ pet })
+        return res.status(404).jsonPretty({ type: 'error', message: `Pet [${id}] not found` })
+    res.status(200).jsonPretty({ pet: formatPet(pet) })
 }
 
-const createPet = async (req, res) => {
-    if (!req.body.name)
-        return res.status(400).jsonPretty({ error: 'The name is required' })
+export const createPet = async (req, res) => {
+    if (req.body.type == undefined)
+        return res.status(400).jsonPretty({ type: 'error', message: 'The pet type is required' })
+    if (req.body.name == undefined)
+        return res.status(400).jsonPretty({ type: 'error', message: 'The pet name is required' })
+    if (petTypes[req.body.type] == undefined)
+        return res.status(400).jsonPretty({ type: 'error', message: 'The pet type is not valid' })
 
-    const pet = await Pet.create(req.body)
-    res.status(200).jsonPretty({
-        msj: `Pet [${pet.id}] created successfully`,
+    const pet = formatPet(await Pet.create(req.body))
+    res.status(201).jsonPretty({
+        type: 'success',
+        message: `${pet.type} [${pet.id}] created successfully`,
         pet
     })
 }
 
-const updatePet = async (req, res) => {
+export const updatePet = async (req, res) => {
     const id = req.params.id
-    const updated = await Pet.update(req.body, { where: { id } })
+    const { adoption_status, ...body } = req.body
 
-    if (!req.body.name && !req.body.age)
-        return res.status(400).jsonPretty({ error: 'There is not valid data for update' })
+    if (!body.type && !body.name && !body.age)
+        return res.status(400).jsonPretty({ type: 'error', message: 'There is not valid data for update' })
+    if (body.type && petTypes[body.type] == undefined)
+        return res.status(400).jsonPretty({ type: 'error', message: 'The pet type is not valid' })
 
-    if (!updated[0])
-        return res.status(500).jsonPretty({ error: `Pet [${id}] does not exists` })
-    res.status(200).jsonPretty({ msj: `Pet [${id}] updated successfully` })
+    let pet = await getPet(id)
+    if (pet == null)
+        return res.status(404).jsonPretty({ type: 'error', message: `Pet [${id}] does not exists` })
+
+    pet.update(body, { where: { id } })
+    res.status(200).jsonPretty({
+        type: 'success',
+        message: `${petTypes[pet.type]} [${id}] updated successfully`,
+        pet: formatPet(pet)
+    })
 }
 
-const removePet = async (req, res) => {
+export const removePet = async (req, res) => {
     const id = req.params.id
-    const deleted = await Pet.destroy({ where: { id } })
+    let pet = await getPet(id)
 
-    if (!deleted)
-        return re.status(500).jsonPretty({ error: `Pet [${id}] does not exists` })
-    res.status(200).jsonPretty({ msj: `Pet [${id}] deleted successfully` })
+    if (pet == null)
+        return res.status(404).jsonPretty({ type: 'error', message: `Pet [${id}] does not exists` })
+
+    pet.destroy()
+    res.status(200).jsonPretty({
+        type: 'success',
+        message: `${petTypes[pet.type]} [${id}] deleted successfully`,
+        pet: formatPet(pet)
+    })
 }
-
-export { readPets, readPet, createPet, updatePet, removePet }
