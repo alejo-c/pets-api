@@ -2,7 +2,7 @@
   "name": "pets-api",
   "version": "3.0.0",
   "description": "This project provides a RESTful API that manages the adoption requests for cats and dogs in a MySQL database named petsdb. This API allows you to perform CRUD (Create, Read, Update, Delete) operations on the pet, adopters, and adoptino requests records stored in the pets, adopters and adoption_requests tables, including an extra operations to approve and reject adoption requests.",
-  "main": "index.js",
+  "main": "api/index.js",
   "type": "module",
   "scripts": {
     "start": "node src/app.js",
