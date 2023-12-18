@@ -1,7 +1,6 @@
 import { Adopter, getAdopter } from '../models/adopter-model.js'
 
 export const createAdopter = async (req, res) => {
-    console.log('body:', req.body)
     if (req.body.name == undefined)
         return res.status(400).jsonPretty({ type: 'error', message: 'The adopter name is required' })
 

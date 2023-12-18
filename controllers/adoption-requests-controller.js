@@ -1,8 +1,8 @@
-import { AdoptionRequest, getAdoptionRequest, formatAdoptionRequest } from '../models/adoption-request-model.js'
-import { formatPet, getPet } from '../models/pet-model.js'
+import { AdoptionRequest, getRequest, formatRequest } from '../models/adoption-request-model.js'
+import { getPet } from '../models/pet-model.js'
 import { getAdopter } from '../models/adopter-model.js'
 
-export const createAdoptionRequest = async (req, res) => {
+export const createRequest = async (req, res) => {
     const petId = req.body.pet_id
     const adopterId = req.body.adopter_id
     const pet = await getPet(petId)
@@ -17,122 +17,115 @@ export const createAdoptionRequest = async (req, res) => {
     if (adopter == null)
         return res.status(404).jsonPretty({ type: 'error', message: `Adopter [${id}] not found` })
 
-    const adoptionRequest = await AdoptionRequest.create(req.body)
+    const request = await AdoptionRequest.create(req.body)
     pet.update({ adoption_status: '2' })
 
     res.status(201).jsonPretty({
         type: 'success',
-        message: `Adoption request [${adoptionRequest.id}] created successfully`,
-        adoptionRequest: formatAdoptionRequest(adoptionRequest)
+        message: `Adoption request [${request.id}] created successfully`,
+        adoptionRequest: formatRequest(request)
     })
 }
 
-export const readAdoptionRequests = async (req, res) => {
-    const adoptionRequests = await AdoptionRequest.findAll()
-    const length = adoptionRequests.length
+export const readRequests = async (req, res) => {
+    let requests = await AdoptionRequest.findAll()
+    const length = requests.length
+    requests = requests.map(request => formatRequest(request))
 
     if (length == 0)
         return res.status(500).jsonPretty({
-            type: 'error',
-            message: 'There is no adoption requests',
-            length
+            type: 'error', message: 'There is no adoption requests', length
         })
-    res.status(200).jsonPretty({ adoptionRequests, length })
+    res.status(200).jsonPretty({ adoptionRequests: requests, length })
 }
 
-export const readAdoptionRequest = async (req, res) => {
+export const readRequest = async (req, res) => {
     const id = req.params.id
-    const adoptionRequest = await getAdoptionRequest(id)
+    const request = await getRequest(id)
 
-    if (adoptionRequest == null)
+    if (request == null)
         return res.status(404).jsonPretty({
-            type: 'error',
-            message: `Adoption request [${id}] not found`
+            type: 'error', message: `Adoption request [${id}] not found`
         })
-    res.status(200).jsonPretty({ adoptionRequest: formatAdoptionRequest(adoptionRequest) })
+    res.status(200).jsonPretty({ adoptionRequest: formatRequest(request) })
 }
 
-export const updateAdoptionRequest = async (req, res) => {
+export const updateRequest = async (req, res) => {
     const id = req.params.id
     const { status, ...body } = req.body
 
     if (!body.pet_id && !body.adopter_id)
         return res.status(400).jsonPretty({
-            type: 'error',
-            message: 'There is not valid data for update'
+            type: 'error', message: 'There is not valid data for update'
         })
 
-    const adoptionRequest = await getAdoptionRequest(id)
-    if (adoptionRequest == null)
+    const request = await getRequest(id)
+    if (request == null)
         return res.status(404).jsonPretty({
-            type: 'error',
-            message: `Adoption request [${id}] does not exists`
+            type: 'error', message: `Adoption request [${id}] does not exists`
         })
 
-    adoptionRequest.update(body)
+    request.update(body)
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] updated successfully`,
-        adoptionRequest: formatAdoptionRequest(adoptionRequest)
+        adoptionRequest: formatRequest(request)
     })
 }
 
-export const approveAdoptionRequest = async (req, res) => {
+export const approveRequest = async (req, res) => {
     const id = req.params.id
 
-    const adoptionRequest = await getAdoptionRequest(id)
-    if (adoptionRequest == null)
+    const request = await getRequest(id)
+    if (request == null)
         return res.status(404).jsonPretty({
-            type: 'error',
-            message: `Adoption request [${id}] does not exists`
+            type: 'error', message: `Adoption request [${id}] does not exists`
         })
 
-    const pet = await getPet(adoptionRequest.pet_id)
+    const pet = await getPet(request.pet_id)
     pet.update({ adoption_status: '3' })
-    adoptionRequest.update({ status: '4' })
+    request.update({ status: '4' })
 
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] approved successfully`,
-        adoptionRequest: formatAdoptionRequest(adoptionRequest)
+        adoptionRequest: formatRequest(request)
     })
 }
 
-export const rejectAdoptionRequest = async (req, res) => {
+export const rejectRequest = async (req, res) => {
     const id = req.params.id
 
-    const adoptionRequest = await getAdoptionRequest(id)
-    if (adoptionRequest == null)
+    const request = await getRequest(id)
+    if (request == null)
         return res.status(404).jsonPretty({
-            type: 'error',
-            message: `Adoption request [${id}] does not exists`
+            type: 'error', message: `Adoption request [${id}] does not exists`
         })
 
-    const pet = await getPet(adoptionRequest.pet_id)
+    const pet = await getPet(request.pet_id)
     pet.update({ adoption_status: '1' })
-    adoptionRequest.update({ status: '5' })
+    request.update({ status: '5' })
 
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] rejected successfully`,
-        adoptionRequest: formatAdoptionRequest(adoptionRequest)
+        adoptionRequest: formatRequest(request)
     })
 }
 
-export const deleteAdoptionRequest = async (req, res) => {
+export const deleteRequest = async (req, res) => {
     const id = req.params.id
-    const adoptionRequest = await getAdoptionRequest(id)
+    const request = await getRequest(id)
 
-    if (adoptionRequest == null)
+    if (request == null)
         return res.status(404).jsonPretty({
-            type: 'error',
-            message: `Adoption request [${id}] does not exists`
+            type: 'error', message: `Adoption request [${id}] does not exists`
         })
 
-    adoptionRequest.destroy()
+    request.destroy()
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] deleted successfully`,
-        adoptionRequest: formatAdoptionRequest(adoptionRequest)
+        adoptionRequest: formatRequest(request)
     })
 }

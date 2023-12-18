@@ -3,7 +3,7 @@ import cors from 'cors'
 
 import { petsRouter } from "../routes/pets-router.js"
 import { adopterRouter } from '../routes/adopter-router.js'
-import { adoptionRequestRouter } from '../routes/adoption-request-router.js'
+import { requestRouter } from '../routes/adoption-request-router.js'
 import { db } from "../database/config.db.js"
 
 const app = express()
@@ -23,7 +23,11 @@ app.use((req, res, next) => {
 })
 app.use('/pets', petsRouter)
 app.use('/adopters', adopterRouter)
-app.use('/adoptionrequests', adoptionRequestRouter)
+app.use('/adoptionrequests', requestRouter)
+
+app.get('/', (req, res) => res.status(301).redirect(
+    'https://github.com/alejo-c/pets-api?tab=readme-ov-file#api-usage'
+))
 
 db.sync().then(() => {
     app.listen(PORT, () => console.log(`Server started at http://localhost:${PORT}`))

@@ -18,21 +18,22 @@ export const AdoptionRequest = db.define('adoption_request', {
     },
     status: {
         type: DataTypes.CHAR,
-        defaultValue: '2'
+        defaultValue: '2',
+        allowNull: false
     }
 })
 
 export const adoptionStatuses = {
-    '1': 'Avalilable',
+    '1': 'Available',
     '2': 'In process',
     '3': 'Adopted',
     '4': 'Approved',
     '5': 'Rejected'
 }
 
-export const getAdoptionRequest = id => AdoptionRequest.findByPk(id)
+export const getRequest = id => AdoptionRequest.findByPk(id)
 
-export const formatAdoptionRequest = adoptionRequest => ({
-    ...adoptionRequest.dataValues,
-    status: adoptionStatuses[adoptionRequest.status]
+export const formatRequest = request => ({
+    ...request.dataValues,
+    status: adoptionStatuses[request.status]
 })

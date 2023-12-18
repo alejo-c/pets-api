@@ -3,12 +3,19 @@ import * as controller from "../controllers/adoption-requests-controller.js"
 
 const router = express.Router()
 
-router.get('/', controller.readAdoptionRequests)
-router.get('/:id', controller.readAdoptionRequest)
-router.post('/create', controller.createAdoptionRequest)
-router.put('/update/:id', controller.updateAdoptionRequest)
-router.put('/approve/:id', controller.approveAdoptionRequest)
-router.put('/reject/:id', controller.rejectAdoptionRequest)
-router.delete('/delete/:id', controller.deleteAdoptionRequest)
+router.get('/', controller.readRequests)
+router.get('/:id', controller.readRequest)
+router.post('/create', controller.createRequest)
+router.put('/update/:id', controller.updateRequest)
+router.put('/approve/:id', controller.approveRequest)
+router.put('/reject/:id', controller.rejectRequest)
+router.delete('/delete/:id', controller.deleteRequest)
 
-export { router as adoptionRequestRouter }
+export { router as requestRouter }
+
+
+
+
+
+
+
