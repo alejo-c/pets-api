@@ -1,4 +1,4 @@
-import { AdoptionRequest, getRequest, formatRequest } from '../models/adoption-request-model.js'
+import { AdoptionRequest, getRequest } from '../models/adoption-request-model.js'
 import { getPet } from '../models/pet-model.js'
 import { getAdopter } from '../models/adopter-model.js'
 
@@ -23,14 +23,13 @@ export const createRequest = async (req, res) => {
     res.status(201).jsonPretty({
         type: 'success',
         message: `Adoption request [${request.id}] created successfully`,
-        adoptionRequest: formatRequest(request)
+        adoptionRequest
     })
 }
 
 export const readRequests = async (req, res) => {
-    let requests = await AdoptionRequest.findAll()
+    const requests = await AdoptionRequest.findAll()
     const length = requests.length
-    requests = requests.map(request => formatRequest(request))
 
     if (length == 0)
         return res.status(500).jsonPretty({
@@ -47,7 +46,7 @@ export const readRequest = async (req, res) => {
         return res.status(404).jsonPretty({
             type: 'error', message: `Adoption request [${id}] not found`
         })
-    res.status(200).jsonPretty({ adoptionRequest: formatRequest(request) })
+    res.status(200).jsonPretty({ adoptionRequest })
 }
 
 export const updateRequest = async (req, res) => {
@@ -69,7 +68,7 @@ export const updateRequest = async (req, res) => {
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] updated successfully`,
-        adoptionRequest: formatRequest(request)
+        adoptionRequest
     })
 }
 
@@ -89,7 +88,7 @@ export const approveRequest = async (req, res) => {
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] approved successfully`,
-        adoptionRequest: formatRequest(request)
+        adoptionRequest
     })
 }
 
@@ -109,7 +108,7 @@ export const rejectRequest = async (req, res) => {
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] rejected successfully`,
-        adoptionRequest: formatRequest(request)
+        adoptionRequest
     })
 }
 
@@ -126,6 +125,6 @@ export const deleteRequest = async (req, res) => {
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] deleted successfully`,
-        adoptionRequest: formatRequest(request)
+        adoptionRequest
     })
 }

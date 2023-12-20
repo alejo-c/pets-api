@@ -1,13 +1,11 @@
-import { Pet, petTypes, getPet, formatPet } from '../models/pet-model.js'
+import { Pet, petTypes, getPet } from '../models/pet-model.js'
 
 export const readPets = async (req, res) => {
-    let pets = await Pet.findAll()
-    pets = pets.map(pet => formatPet(pet))
-
+    const pets = await Pet.findAll()
     const length = pets.length
+
     if (length == 0)
         return res.status(500).jsonPretty({ type: 'error', message: 'There is no pets', length })
-
     res.status(200).jsonPretty({ pets, length })
 }
 
@@ -17,7 +15,7 @@ export const readPet = async (req, res) => {
 
     if (pet == null)
         return res.status(404).jsonPretty({ type: 'error', message: `Pet [${id}] not found` })
-    res.status(200).jsonPretty({ pet: formatPet(pet) })
+    res.status(200).jsonPretty({ pet })
 }
 
 export const createPet = async (req, res) => {
@@ -28,7 +26,7 @@ export const createPet = async (req, res) => {
     if (petTypes[req.body.type] == undefined)
         return res.status(400).jsonPretty({ type: 'error', message: 'The pet type is not valid' })
 
-    const pet = formatPet(await Pet.create(req.body))
+    const pet = await Pet.create(req.body)
     res.status(201).jsonPretty({
         type: 'success',
         message: `${pet.type} [${pet.id}] created successfully`,
@@ -53,7 +51,7 @@ export const updatePet = async (req, res) => {
     res.status(200).jsonPretty({
         type: 'success',
         message: `${petTypes[pet.type]} [${id}] updated successfully`,
-        pet: formatPet(pet)
+        pet
     })
 }
 
@@ -68,6 +66,6 @@ export const removePet = async (req, res) => {
     res.status(200).jsonPretty({
         type: 'success',
         message: `${petTypes[pet.type]} [${id}] deleted successfully`,
-        pet: formatPet(pet)
+        pet
     })
 }

@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize"
 import { db } from "../database/config.db.js"
-import { adoptionStatuses } from './adoption-request-model.js'
 
 export const Pet = db.define('pet', {
     id: {
@@ -30,9 +29,3 @@ export const Pet = db.define('pet', {
 export const petTypes = { 'C': 'Cat', 'D': 'Dog' }
 
 export const getPet = id => Pet.findByPk(id)
-
-export const formatPet = pet => ({
-    ...pet.dataValues,
-    type: petTypes[pet.type],
-    adoption_status: adoptionStatuses[pet.adoption_status]
-})

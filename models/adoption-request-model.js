@@ -32,8 +32,3 @@ export const adoptionStatuses = {
 }
 
 export const getRequest = id => AdoptionRequest.findByPk(id)
-
-export const formatRequest = request => ({
-    ...request.dataValues,
-    status: adoptionStatuses[request.status]
-})
