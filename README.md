@@ -21,7 +21,7 @@ This project provides a RESTful API that manages the adoption requests for cats 
 
 ```sh
 # Create pet
-curl -d '{"type":"<type>, "name":"<name>", "age":"<age>"}' \
+curl -d '{"type":"<type>", "name":"<name>", "age":"<age>"}' \
     -H "Content-Type: application/json" \
     -X POST https://pets-api-orcin.vercel.app/pets/create
 ```
@@ -35,7 +35,7 @@ curl https://pets-api-orcin.vercel.app/pets/<id>
 ```
 ```sh
 # Update pet
-curl -d '{"type":"<type>, "name":"<name>", "age":"<age>"}' \
+curl -d '{"type":"<type>", "name":"<name>", "age":"<age>"}' \
     -H "Content-Type: application/json" \
     -X PUT https://pets-api-orcin.vercel.app/pets/update/<id>
 ```
@@ -48,7 +48,7 @@ curl -X DELETE https://pets-api-orcin.vercel.app/pets/delete/<id>
 
 ```sh
 # Create adopter
-curl -d '{"name":"<name>", "address":"<address>, "contact":"<contact>"}' \
+curl -d '{"name":"<name>", "address":"<address>", "contact":"<contact>"}' \
     -H "Content-Type: application/json" \
     -X POST https://pets-api-orcin.vercel.app/adopters/create
 ```
@@ -62,7 +62,7 @@ curl https://pets-api-orcin.vercel.app/adopters/<id>
 ```
 ```sh
 # Update adopter
-curl -d '{"name":"<name>", "address":"<address>, "contact":"<contact>"}' \
+curl -d '{"name":"<name>", "address":"<address>", "contact":"<contact>"}' \
     -H "Content-Type: application/json" \
     -X PUT https://pets-api-orcin.vercel.app/adopters/update/<id>
 ```
@@ -75,7 +75,7 @@ curl -X DELETE https://pets-api-orcin.vercel.app/adopters/delete/<id>
 
 ```sh
 # Create adoptionrequest
-curl -d '{"pet_id":"<pet_id>", "adopter_id":"<adopter_id>}' \
+curl -d '{"pet_id":"<pet_id>", "adopter_id":"<adopter_id>"}' \
     -H "Content-Type: application/json" \
     -X POST https://pets-api-orcin.vercel.app/adoptionrequests/create
 ```
@@ -89,7 +89,7 @@ curl https://pets-api-orcin.vercel.app/adoptionrequests/<id>
 ```
 ```sh
 # Update adoption request
-curl -d '{"pet_id":"<pet_id>", "adopter_id":"<adopter_id>}' \
+curl -d '{"pet_id":"<pet_id>", "adopter_id":"<adopter_id>"}' \
     -H "Content-Type: application/json" \
     -X PUT https://pets-api-orcin.vercel.app/adoptionrequests/update/<id>
 ```
