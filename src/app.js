@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 })
 app.use('/pets', petsRouter)
 app.use('/adopters', adopterRouter)
-app.use('/adoptionrequests', requestRouter)
+app.use('/requests', requestRouter)
 
 app.get('/', (req, res) => res.status(301).redirect(
     'https://github.com/alejo-c/pets-api?tab=readme-ov-file#api-usage'

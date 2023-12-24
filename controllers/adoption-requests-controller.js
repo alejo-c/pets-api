@@ -23,7 +23,7 @@ export const createRequest = async (req, res) => {
     res.status(201).jsonPretty({
         type: 'success',
         message: `Adoption request [${request.id}] created successfully`,
-        adoptionRequest
+        request
     })
 }
 
@@ -46,7 +46,7 @@ export const readRequest = async (req, res) => {
         return res.status(404).jsonPretty({
             type: 'error', message: `Adoption request [${id}] not found`
         })
-    res.status(200).jsonPretty({ adoptionRequest })
+    res.status(200).jsonPretty({ request })
 }
 
 export const updateRequest = async (req, res) => {
@@ -68,7 +68,7 @@ export const updateRequest = async (req, res) => {
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] updated successfully`,
-        adoptionRequest
+        request
     })
 }
 
@@ -88,7 +88,7 @@ export const approveRequest = async (req, res) => {
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] approved successfully`,
-        adoptionRequest
+        request
     })
 }
 
@@ -108,7 +108,7 @@ export const rejectRequest = async (req, res) => {
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] rejected successfully`,
-        adoptionRequest
+        request
     })
 }
 
@@ -125,6 +125,6 @@ export const deleteRequest = async (req, res) => {
     res.status(200).jsonPretty({
         type: 'success',
         message: `Adoption request [${id}] deleted successfully`,
-        adoptionRequest
+        request
     })
 }
