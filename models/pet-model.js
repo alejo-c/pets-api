@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize"
 import { db } from "../database/config.db.js"
-import { adoptionStatuses } from './adoption-request-model.js'
 
 export const Pet = db.define('pet', {
     id: {

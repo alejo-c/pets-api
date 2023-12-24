@@ -34,3 +34,5 @@ db.sync().then(() => {
 }).catch(err => {
     console.error(`Error at database sync: ${err}`);
 })
+
+export default app
