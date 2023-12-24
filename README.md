@@ -129,6 +129,9 @@ npm install
 ```
 
 c. Set up enviroment variables:
+```bash
+cp localhost.env .env
+```
 ```conf
 # .env
 DB_HOST=localhost
