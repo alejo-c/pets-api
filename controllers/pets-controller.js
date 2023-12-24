@@ -29,7 +29,7 @@ export const createPet = async (req, res) => {
     const pet = await Pet.create(req.body)
     res.status(201).jsonPretty({
         type: 'success',
-        message: `${pet.type} [${pet.id}] created successfully`,
+        message: `${petTypes[pet.type]} ${pet.name} (${pet.id}) created successfully`,
         pet
     })
 }
@@ -50,7 +50,7 @@ export const updatePet = async (req, res) => {
     pet.update(body, { where: { id } })
     res.status(200).jsonPretty({
         type: 'success',
-        message: `${petTypes[pet.type]} [${id}] updated successfully`,
+        message: `${petTypes[pet.type]} ${pet.name} (${id}) updated successfully`,
         pet
     })
 }
@@ -65,7 +65,7 @@ export const removePet = async (req, res) => {
     pet.destroy()
     res.status(200).jsonPretty({
         type: 'success',
-        message: `${petTypes[pet.type]} [${id}] deleted successfully`,
+        message: `${petTypes[pet.type]} ${pet.name} (${id}) deleted successfully`,
         pet
     })
 }
