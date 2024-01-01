@@ -31,4 +31,4 @@ export const adoptionStatuses = {
     '5': 'Rejected'
 }
 
-export const getRequest = id => AdoptionRequest.findByPk(id)
+export const getRequestById = id => AdoptionRequest.findByPk(id)

@@ -9,15 +9,16 @@ export const Adopter = db.define('adopter', {
         autoIncrement: true
     },
     name: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         allowNull: false
     },
     address: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING
     },
     contact: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
+        allowNull: false
     }
 })
 
-export const getAdopter = id => Adopter.findByPk(id)
+export const getAdopterById = id => Adopter.findByPk(id)
