@@ -1,6 +1,6 @@
 # Pets API Server
 
-This project provides a RESTful API that manages the adoption requests for cats and dogs in a MySQL database named `petsdb`. This API allows you to perform CRUD (Create, Read, Update, Delete) operations on the pet, adopters, and adoptino requests records stored in the `pets`, `adopters` and `adoption_requests` tables, including an extra operations to approve and reject adoption requests.
+This project provides a RESTful API that manages the adoption requests for cats and dogs in a MySQL database named `petsdb`. This API allows you to perform CRUD (Create, Read, Update, Delete) operations on the pet, adopters, and adoption requests records stored in the `pets`, `adopters` and `adoption_requests` tables, including an extra operations to approve and reject adoption requests.
 
 **Made by:** José Alejandro Castrillón Ortega.
 
@@ -21,7 +21,7 @@ This project provides a RESTful API that manages the adoption requests for cats 
 
 ```sh
 # Create pet
-curl -d '{"type":"<type>", "name":"<name>", "age":"<age>"}' \
+curl -d '{"type":"<type>", "name":"<name>", "age":"<age>", "breed":"<breed>", "photo_url":"<photo_url>", "description":"<description>"}' \
     -H "Content-Type: application/json" \
     -X POST https://pets-tawny.vercel.app/pets/create
 ```
@@ -34,8 +34,12 @@ curl https://pets-tawny.vercel.app/pets/
 curl https://pets-tawny.vercel.app/pets/<id>
 ```
 ```sh
+# Show pet breed
+curl https://pets-tawny.vercel.app/pets/<id>/breed
+```
+```sh
 # Update pet
-curl -d '{"type":"<type>", "name":"<name>", "age":"<age>"}' \
+curl -d '{"type":"<type>", "name":"<name>", "age":"<age>", "breed":"<breed>", "photo_url":"<photo_url>", "description":"<description>"}' \
     -H "Content-Type: application/json" \
     -X PUT https://pets-tawny.vercel.app/pets/update/<id>
 ```
@@ -77,33 +81,41 @@ curl -X DELETE https://pets-tawny.vercel.app/adopters/delete/<id>
 # Create adoptionrequest
 curl -d '{"pet_id":"<pet_id>", "adopter_id":"<adopter_id>"}' \
     -H "Content-Type: application/json" \
-    -X POST https://pets-tawny.vercel.app/requests/create
+    -X POST https://pets-tawny.vercel.app/adoption-requests/create
 ```
 ```sh
 # Show all adoption requests
-curl https://pets-tawny.vercel.app/requests/
+curl https://pets-tawny.vercel.app/adoption-requests/
 ```
 ```sh
 # Show single adoption request
-curl https://pets-tawny.vercel.app/requests/<id>
+curl https://pets-tawny.vercel.app/adoption-requests/<id>
+```
+```sh
+# Show adoption request pet
+curl https://pets-tawny.vercel.app/adoption-requests/<id>/pet
+```
+```sh
+# Show adoption request adopter
+curl https://pets-tawny.vercel.app/adoption-requests/<id>/adopter
 ```
 ```sh
 # Update adoption request
 curl -d '{"pet_id":"<pet_id>", "adopter_id":"<adopter_id>"}' \
     -H "Content-Type: application/json" \
-    -X PUT https://pets-tawny.vercel.app/requests/update/<id>
+    -X PUT https://pets-tawny.vercel.app/adoption-requests/update/<id>
 ```
 ```sh
 # Approve adoption request
-curl -X PUT https://pets-tawny.vercel.app/requests/approve/<id>
+curl -X PUT https://pets-tawny.vercel.app/adoption-requests/approve/<id>
 ```
 ```sh
 # Reject adoption request
-curl -X PUT https://pets-tawny.vercel.app/requests/reject/<id>
+curl -X PUT https://pets-tawny.vercel.app/adoption-requests/reject/<id>
 ```
 ```sh
 # Delete adoption request
-curl -X DELETE https://pets-tawny.vercel.app/requests/delete/<id>
+curl -X DELETE https://pets-tawny.vercel.app/adoption-requests/delete/<id>
 ```
 
 ## For Production
@@ -125,17 +137,18 @@ git clone https://github.com/alejo-c/pets-api.git
 
 b. Install dependences:
 ```bash
-npm install
+npm i # Or npm install
 ```
 
 c. Set up enviroment variables:
 ```bash
 cp localhost.env .env
 ```
+or
 ```conf
 # .env
 DB_HOST=localhost
-DB_USER=<your_username>
+DB_USER=<your_adoptername>
 DB_PASSWD=<your_password>
 DB_NAME=<your_database>
 ```
@@ -149,10 +162,10 @@ DB_NAME=petsdb
 
 d. Import the database backup:
 ```sql
--- Log in as a MySQL root user
+-- Log in as a MySQL root adopter
 mysql -u root -p
 
--- Use your previous created database
+-- Use your previous created database, recomended: petsdb
 use <database_name>
 
 -- Restore data into the database
