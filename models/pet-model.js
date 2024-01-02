@@ -1,5 +1,5 @@
-import { DataTypes } from "sequelize"
-import { db } from "../database/config.db.js"
+import { DataTypes } from 'sequelize'
+import { db } from '../database/config.db.js'
 
 export const Pet = db.define('pet', {
     id: {
@@ -17,7 +17,21 @@ export const Pet = db.define('pet', {
         allowNull: false
     },
     age: {
-        type: DataTypes.INTEGER
+        type: DataTypes.FLOAT,
+        defaultValue: 0
+    },
+    breed: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1
+    },
+    photo_url: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     adoption_status: {
         type: DataTypes.CHAR,
@@ -28,4 +42,4 @@ export const Pet = db.define('pet', {
 
 export const petTypes = { 'C': 'Cat', 'D': 'Dog' }
 
-export const getPet = id => Pet.findByPk(id)
+export const getPetById = id => Pet.findByPk(id)
