@@ -9,4 +9,4 @@ router.post('/register', controller.createAdopter)
 router.put('/update/:id', controller.updateAdopter)
 router.delete('/delete/:id', controller.deleteAdopter)
 
-export { router as adopterRouter }
+export { router as adoptersRouter }
