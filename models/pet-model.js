@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize'
 import { db } from '../database/config.db.js'
+import { getPetBreedById } from './pet-breed-model.js'
 
 export const Pet = db.define('pet', {
     id: {
@@ -14,6 +15,10 @@ export const Pet = db.define('pet', {
     },
     name: {
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    gender: {
+        type: DataTypes.CHAR,
         allowNull: false
     },
     age: {
@@ -41,5 +46,6 @@ export const Pet = db.define('pet', {
 })
 
 export const petTypes = { 'C': 'Cat', 'D': 'Dog' }
+export const petGenders = { 'M': 'Male', 'F': 'Female' }
 
-export const getPetById = id => Pet.findByPk(id)
+export const getPetById = id => Pet.findByPk(id) 

@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize'
 import { db } from '../database/config.db.js'
+import { getPetById } from './pet-model.js'
+import { getAdopterById } from './adopter-model.js'
 
 export const AdoptionRequest = db.define('adoption_request', {
     id: {
@@ -31,4 +33,4 @@ export const adoptionStatuses = {
     '5': 'Rejected'
 }
 
-export const getRequestById = id => AdoptionRequest.findByPk(id)
+export const getRequestById = id => AdoptionRequest.findByPk(id) 
