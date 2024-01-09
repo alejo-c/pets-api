@@ -5,7 +5,6 @@ const router = express.Router()
 
 router.get('/', controller.readPets)
 router.get('/:id', controller.readPet)
-router.get('/:id/breed', controller.readPetBreed)
 router.post('/register', controller.createPet)
 router.put('/update/:id', controller.updatePet)
 router.delete('/delete/:id', controller.removePet)

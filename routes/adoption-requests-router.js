@@ -5,8 +5,6 @@ const router = express.Router()
 
 router.get('/', controller.readRequests)
 router.get('/:id', controller.readRequest)
-router.get('/:id/pet', controller.readRequestPet)
-router.get('/:id/adopter', controller.readRequestAdopter)
 router.post('/register', controller.createRequest)
 router.put('/update/:id', controller.updateRequest)
 router.put('/approve/:id', controller.approveRequest)
