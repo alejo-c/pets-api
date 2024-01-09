@@ -1,5 +1,5 @@
-import { PetBreed } from '../models/pet-breed-model.js'
-import { Pet, petTypes, getPetById } from '../models/pet-model.js'
+import { getPetBreedById } from '../models/pet-breed-model.js'
+import { Pet, petTypes, getPetById, petGenders } from '../models/pet-model.js'
 
 export const createPet = async (req, res) => {
     const { adoption_status, body } = req.body
@@ -12,6 +12,10 @@ export const createPet = async (req, res) => {
         type: 'error',
         message: 'The pet name is required'
     })
+    if (body.gender === undefined) return res.status(400).jsonPretty({
+        type: 'error',
+        message: 'The pet gender is required'
+    })
     if (body.photo_url === undefined) return res.status(400).jsonPretty({
         type: 'error',
         message: 'The pet photo is required'
@@ -21,21 +25,28 @@ export const createPet = async (req, res) => {
         message: 'The pet description is required'
     })
 
-    if (petTypes[body.type] === undefined) return res.status(400).jsonPretty({
+    const type = petTypes[pet.type]
+    if (type === undefined) return res.status(400).jsonPretty({
         type: 'error',
         message: 'The pet type is not valid'
+    })
+
+    const gender = petGenders[pet.gender]
+    if (gender === undefined) return res.status(400).jsonPretty({
+        type: 'error',
+        message: 'The pet gender is not valid'
     })
 
     const pet = await Pet.create(body)
     res.status(201).jsonPretty({
         type: 'success',
-        message: `${petTypes[pet.type]} ${pet.name} (id: ${pet.id}) created successfully`,
+        message: `${gender} ${type} ${pet.name} (id: ${pet.id}) created successfully`,
         created: pet
     })
 }
 
 export const readPets = async (req, res) => {
-    const pets = await Pet.findAll()
+    let pets = await Pet.findAll()
     const length = pets.length
 
     if (length === 0) return res.status(500).jsonPretty({
@@ -43,34 +54,28 @@ export const readPets = async (req, res) => {
         message: 'There is no pets',
         length
     })
+
+    pets = await Promise.all(pets.map(async pet => {
+        // pet.breed = await getPetBreedById(pet.breed)
+        const breed = await getPetBreedById(pet.breed)
+        return { ...pet.dataValues, breed }
+    }))
     res.status(200).jsonPretty({ collection: pets, length })
 }
 
 export const readPet = async (req, res) => {
     const id = req.params.id
-    const pet = await getPetById(id)
+    let pet = await getPetById(id)
 
     if (pet === null) return res.status(404).jsonPretty({
         type: 'error',
         message: `Pet with id ${id} not found`
     })
+
+    const breed = await getPetBreedById(pet.breed)
+    pet = { ...pet.dataValues, breed }
+
     res.status(200).jsonPretty({ object: pet })
-}
-
-export const readPetBreed = async (req, res) => {
-    const id = req.params.id
-    const pet = await getPetById(id)
-
-    if (pet === null) return res.status(404).jsonPretty({
-        type: 'error',
-        message: `Pet with id ${id} not found`
-    })
-
-    const breed = PetBreed.findByPk(pet.breed)
-    if (breed === null)
-        breed = PetBreed.findByPk(1)
-
-    res.status(200).jsonPretty({ object: breed })
 }
 
 export const updatePet = async (req, res) => {
@@ -85,6 +90,7 @@ export const updatePet = async (req, res) => {
 
     const isInvalidData = body.type === undefined
         && body.name === undefined
+        && body.gender === undefined
         && body.age === undefined
         && body.photo === undefined
         && body.description === undefined
@@ -93,16 +99,24 @@ export const updatePet = async (req, res) => {
         message: 'There is not valid data for update'
     })
 
-    const isInvalidType = body.type !== undefined && petTypes[body.type] === undefined
+    const type = petTypes[pet.type]
+    const isInvalidType = body.type !== undefined && type === undefined
     if (isInvalidType) return res.status(400).jsonPretty({
         type: 'error',
         message: 'The pet type is not valid'
     })
 
-    pet.update(body, { where: { id } })
+    const gender = petGenders[pet.gender]
+    const isInvalidGender = body.gender !== undefined && gender === undefined
+    if (isInvalidGender) return res.status(400).jsonPretty({
+        type: 'error',
+        message: 'The pet gender is not valid'
+    })
+
+    pet.update(body)
     res.status(200).jsonPretty({
         type: 'success',
-        message: `${petTypes[pet.type]} ${pet.name} (id: ${id}) updated successfully`,
+        message: `${gender} ${type} ${pet.name} (id: ${id}) updated successfully`,
         updated: pet
     })
 }
@@ -117,9 +131,12 @@ export const removePet = async (req, res) => {
     })
 
     pet.destroy()
+    const type = petTypes[pet.type]
+    const gender = petGenders[pet.gender]
+
     res.status(200).jsonPretty({
         type: 'success',
-        message: `${petTypes[pet.type]} ${pet.name} (id: ${id}) deleted successfully`,
+        message: `${gender} ${type} ${pet.name} (id: ${id}) deleted successfully`,
         deleted: pet
     })
 }
